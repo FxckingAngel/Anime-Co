@@ -3,7 +3,8 @@ import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 export default function Home() {
-  const { status } = useSession();
+  const sessionData = useSession();
+  const status = sessionData?.status;
 
   return (
     <Layout title="Mellie | Next-gen Discord Bot Builder">
