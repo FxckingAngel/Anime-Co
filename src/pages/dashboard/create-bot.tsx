@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Layout from '@/components/Layout';
@@ -13,11 +13,14 @@ export default function CreateBot() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  if (status === 'loading') return null;
-  if (!session) {
-    router.replace('/login');
-    return null;
-  }
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'loading' || status === 'unauthenticated') return null;
+  if (!session) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
