@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import Layout from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,7 +18,6 @@ export default function Dashboard() {
   const status = sessionData?.status;
   const router = useRouter();
   const [bots, setBots] = useState<Bot[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -29,7 +28,6 @@ export default function Dashboard() {
         .then(res => res.json())
         .then(data => {
           setBots(data.bots || []);
-          setLoading(false);
         });
     }
   }, [status, router]);
@@ -56,10 +54,7 @@ export default function Dashboard() {
             </div>
           </div>
           <button
-            onClick={() => {
-              // @ts-ignore
-              import('next-auth/react').then(({ signOut }) => signOut({ callbackUrl: '/' }));
-            }}
+            onClick={() => signOut({ callbackUrl: '/' })}
             style={{
               background: '#fff',
               color: '#2563eb',
