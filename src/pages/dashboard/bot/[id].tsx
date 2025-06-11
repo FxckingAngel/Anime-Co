@@ -43,7 +43,6 @@ export default function BotDetail() {
   const [commands, setCommands] = useState<Command[]>([]);
   const [audit, setAudit] = useState<AuditLog[]>([]);
   const [usage, setUsage] = useState<UsageStats>({});
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [cmdName, setCmdName] = useState('');
   const [cmdTrigger, setCmdTrigger] = useState('');
@@ -74,8 +73,7 @@ export default function BotDetail() {
             setBotEditName(data.bot.name);
             setBotEditDescription(data.bot.description);
           }
-          setLoading(false);
-        });
+                  });
     }
   }, [status, id]);
 
