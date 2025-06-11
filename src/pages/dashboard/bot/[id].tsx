@@ -100,12 +100,20 @@ export default function BotDetail() {
   }, [status, id, router]);
 
   if (status === 'loading' || loading) {
-    return <Layout title="Bot | BotGhost Pro"><div style={{ textAlign: 'center', marginTop: '5rem', fontSize: '1.5rem' }}>Loading bot...</div></Layout>;
+    return (
+      <Layout title="Bot | BotGhost Pro">
+        <div style={{ textAlign: 'center', marginTop: '5rem', fontSize: '1.5rem' }}>Loading bot...</div>
+      </Layout>
+    );
   }
   if (error) {
-    return <Layout title="Bot | BotGhost Pro"><div style={{ color: '#dc2626', textAlign: 'center', marginTop: '5rem', fontSize: '1.2rem' }}>{error}</div></Layout>;
+    return (
+      <Layout title="Bot | BotGhost Pro">
+        <div style={{ color: '#dc2626', textAlign: 'center', marginTop: '5rem', fontSize: '1.2rem' }}>{error}</div>
+      </Layout>
+    );
   }
-  if (!bot) return null;
+  if (!bot) return <Layout title="Bot | BotGhost Pro"><></></Layout>;
 
   const handleCommandSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -220,9 +228,11 @@ export default function BotDetail() {
     fetch(`/api/bots/${id}`).then(res => res.json()).then(data => setUsage(data.usage || {}));
   };
 
-  return (
-    <Layout title={`Manage Bot | ${bot.name} | BotGhost Pro`}>
-      {/* ...rest of the component remains unchanged... */}
-    </Layout>
-  );
+return (
+  <Layout title={`Manage Bot | ${bot.name} | Mellie`}>
+    {/* Your page content goes here */}
+    <div>Hello, bot dashboard</div>
+  </Layout>
+);
+
 }

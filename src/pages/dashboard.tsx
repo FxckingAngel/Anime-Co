@@ -2,6 +2,8 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface Bot {
   id: string;
@@ -45,7 +47,6 @@ export default function Dashboard() {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <import Image from 'next/image'; />
             <Image
               src={session.user?.image || '/user.svg'}
               alt={session.user?.name || 'User'}
@@ -91,8 +92,7 @@ export default function Dashboard() {
             justifyContent: 'center',
           }}>
             <div style={{ fontSize: '1.25rem', color: '#475569', marginBottom: '1.5rem' }}>
-              You have no bots yet. <import Link from 'next/link'; />
-              <Link href="/dashboard/create-bot" legacyBehavior>
+              You have no bots yet. <Link href="/dashboard/create-bot" legacyBehavior>
                 <a style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Create your first bot</a>
               </Link>.
             </div>

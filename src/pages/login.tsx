@@ -2,17 +2,27 @@ import { getProviders, signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 
+interface Providers {
+  [key: string]: {
+    id: string;
+    name: string;
+    type: string;
+    signinUrl: string;
+    callbackUrl: string;
+  };
+}
+
 export default function Login() {
-  const [providers, setProviders] = useState<Record<string, any> | null>(null);
+  const [providers, setProviders] = useState<Providers | null>(null);
 
   useEffect(() => {
     getProviders().then(setProviders);
   }, []);
 
   return (
-    <Layout title="Login | BotGhost Pro">
+    <Layout title="Login | Mellie">
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5rem' }}>
-        <h1 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '2rem' }}>Sign in to BotGhost Pro</h1>
+        <h1 style={{ fontSize: '2.2rem', fontWeight: 700, marginBottom: '2rem' }}>Sign in to Mellie</h1>
         {providers && providers.discord && (
           <button
             onClick={() => signIn('discord', { callbackUrl: '/dashboard' })}
