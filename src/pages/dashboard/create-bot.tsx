@@ -4,7 +4,9 @@ import { useSession } from 'next-auth/react';
 import Layout from '@/components/Layout';
 
 export default function CreateBot() {
-  const { data: session, status } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const status = sessionData?.status;
   const router = useRouter();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -36,7 +38,7 @@ export default function CreateBot() {
   };
 
   return (
-    <Layout title="Create Bot | BotGhost Pro">
+    <Layout title="Create Bot | Mellie">
       <div style={{ maxWidth: 520, margin: '4rem auto', background: '#fff', borderRadius: 12, boxShadow: '0 2px 16px rgba(30,41,59,0.06)', padding: '2.5rem 2rem' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#1e293b' }}>Create a New Bot</h1>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
