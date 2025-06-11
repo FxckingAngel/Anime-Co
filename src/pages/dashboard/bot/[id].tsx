@@ -35,7 +35,8 @@ interface UsageStats {
 }
 
 export default function BotDetail() {
-  const { status } = useSession();
+  const sessionData = useSession();
+  const status = sessionData?.status;
   const router = useRouter();
   const { id } = router.query;
   const [bot, setBot] = useState<Bot | null>(null);
@@ -57,6 +58,9 @@ export default function BotDetail() {
 
   useEffect(() => {
     if (status === 'unauthenticated') router.replace('/login');
+  }, [status, router]);
+
+  useEffect(() => {
     if (status === 'authenticated' && id) {
       fetch(`/api/bots/${id}`)
         .then(res => res.json())
@@ -73,15 +77,10 @@ export default function BotDetail() {
           setLoading(false);
         });
     }
-  }, [status, id, router]);
+  }, [status, id]);
 
-  if (status === 'loading' || loading) {
-    return (
-      <Layout title="Bot | Mellie">
-        <div style={{ textAlign: 'center', marginTop: '5rem', fontSize: '1.5rem' }}>Loading bot...</div>
-      </Layout>
-    );
-  }
+  if (status === 'loading' || status === 'unauthenticated') return null;
+  if (!bot) return <Layout title="Bot | Mellie"><></></Layout>;
   if (error) {
     return (
       <Layout title="Bot | Mellie">
@@ -89,7 +88,6 @@ export default function BotDetail() {
       </Layout>
     );
   }
-  if (!bot) return <Layout title="Bot | Mellie"><></></Layout>;
 
   // Only render the UI, all logic is in useEffect and handlers below
   return (
