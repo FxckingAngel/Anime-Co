@@ -1,6 +1,6 @@
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import Layout from '@/components/Layout';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,7 +13,9 @@ interface Bot {
 }
 
 export default function Dashboard() {
-  const { data: session, status } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const status = sessionData?.status;
   const router = useRouter();
   const [bots, setBots] = useState<Bot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -32,18 +34,12 @@ export default function Dashboard() {
     }
   }, [status, router]);
 
-  if (status === 'loading' || (status === 'authenticated' && loading)) {
-    return (
-      <Layout title="Dashboard | BotGhost Pro">
-        <div style={{ textAlign: 'center', marginTop: '5rem', fontSize: '1.5rem' }}>Loading dashboard...</div>
-      </Layout>
-    );
+  if (status === 'loading' || status === 'unauthenticated' || !session) {
+    return null;
   }
 
-  if (!session) return null;
-
   return (
-    <Layout title="Dashboard | BotGhost Pro">
+    <Layout title="Dashboard | Mellie">
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -60,7 +56,10 @@ export default function Dashboard() {
             </div>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: '/' })}
+            onClick={() => {
+              // @ts-ignore
+              import('next-auth/react').then(({ signOut }) => signOut({ callbackUrl: '/' }));
+            }}
             style={{
               background: '#fff',
               color: '#2563eb',
