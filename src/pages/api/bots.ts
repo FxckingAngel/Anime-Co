@@ -34,10 +34,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === 'GET') {
-    if (!session.user || !session.user.email) {
+    const userEmail = session.user?.email;
+    if (!userEmail) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
-    const userBots = bots.filter(b => b.owner === session.user.email);
+    const userBots = bots.filter(b => b.owner === userEmail);
     return res.status(200).json({ bots: userBots });
   }
 
