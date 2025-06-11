@@ -1,0 +1,33 @@
+.about-page {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.about-desc {
+  font-size: 1.1rem;
+  color: #f3f3f3;
+  margin-bottom: 1.5rem;
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  text-align: left;
+  display: inline-block;
+}
+
+.about-list li {
+  margin-bottom: 0.8rem;
+  font-size: 1.05rem;
+}
+
+.about-list a {
+  color: #ff6f61;
+  text-decoration: none;
+  font-weight: 500;
+}
+.about-list a:hover {
+  text-decoration: underline;
+}

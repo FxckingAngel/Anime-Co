@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login with Discord | Anime-Co</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #181a20;
+      color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #23272f;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px #0002;
+      padding: 2.5rem 2rem 2rem 2rem;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      margin: 0 0 0.7rem 0;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+    .desc {
+      font-size: 1.1rem;
+      color: #bdbdbd;
+      margin-bottom: 2rem;
+    }
+    .discord-btn {
+      display: inline-flex;
+      align-items: center;
+      background: #5865F2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      margin-top: 0.5rem;
+    }
+    .discord-btn:hover {
+      background: #4752c4;
+    }
+    .discord-icon {
+      width: 28px;
+      height: 28px;
+      margin-right: 0.7rem;
+      vertical-align: middle;
+    }
+    .links {
+      margin-top: 2rem;
+    }
+    .links a {
+      color: #8be9fd;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .links a:hover {
+      color: #ffb86c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f47e.png" alt="Anime-Co Logo" class="logo" />
+    <h1>Login with Discord</h1>
+    <div class="desc">
+      Securely log in to manage your Anime-Co bot settings and credentials.<br>
+      We use Discord OAuth2 for authentication—your data is safe and private.
+    </div>
+    <a class="discord-btn" href="/api/auth/login">
+      <img src="https://cdn.jsdelivr.net/gh/PKief/vscode-material-icon-theme@main/icons/discord.svg" class="discord-icon" alt="Discord" />
+      Login with Discord
+    </a>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/api/about">API Info</a>
+    </div>
+  </div>
+</body>
+</html>

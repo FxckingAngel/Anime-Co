@@ -1,0 +1,52 @@
+.commands-page {
+  text-align: center;
+}
+
+.commands-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem auto 0 auto;
+  max-width: 900px;
+}
+
+.command-card {
+  background: #23272f;
+  border-radius: 10px;
+  padding: 1.2rem 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.command-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.command-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ff6f61;
+}
+.command-category {
+  background: #181a20;
+  color: #aaa;
+  font-size: 0.95rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: 8px;
+}
+.command-desc {
+  color: #f3f3f3;
+  font-size: 1rem;
+}
+.command-usage {
+  color: #aaa;
+  font-size: 0.97rem;
+}
+.command-usage code {
+  background: #181a20;
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime-Co Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #181a20;
+      color: #f3f3f3;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #23272f;
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+    }
+    .logo {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+    }
+    .desc {
+      font-size: 1.1rem;
+      color: #bdbdbd;
+      margin-bottom: 1.5rem;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: #23272f;
+      border-radius: 10px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 2px 12px #0002;
+      margin-bottom: 2rem;
+      max-width: 500px;
+      width: 100%;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.3rem 0;
+      color: #ffb86c;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 5px;
+      border: none;
+      background: #181a20;
+      color: #f3f3f3;
+      font-size: 1rem;
+      margin-bottom: 0.7rem;
+    }
+    button {
+      background: #8be9fd;
+      color: #181a20;
+      border: none;
+      border-radius: 5px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #50fa7b;
+    }
+    .links {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .links a {
+      color: #8be9fd;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .links a:hover {
+      color: #ffb86c;
+    }
+    .status {
+      margin: 1rem 0 0.5rem 0;
+      color: #50fa7b;
+      font-weight: 500;
+    }
+    .error {
+      color: #ff5555;
+      margin: 0.5rem 0;
+    }
+    .success {
+      color: #50fa7b;
+      margin: 0.5rem 0;
+    }
+    .logout {
+      float: right;
+      margin-top: -2.5rem;
+      margin-right: 1rem;
+      color: #ff5555;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f47e.png" alt="Anime-Co Logo" class="logo" />
+    <h1>Anime-Co Dashboard</h1>
+    <div class="desc">Manage your Discord bot credentials and settings.<br>All data is secure and per-user.</div>
+    <span class="logout" id="logoutBtn" style="display:none">Logout</span>
+  </header>
+  <main>
+    <div class="card" id="loginCard">
+      <div style="text-align:center;">
+        <button onclick="window.location='/api/auth/login'">Login with Discord</button>
+      </div>
+    </div>
+    <div class="card" id="settingsCard" style="display:none;">
+      <div class="status" id="userStatus">Logged in as <span id="username"></span></div>
+      <form id="credsForm">
+        <label for="client_id">Discord Client ID</label>
+        <input type="text" id="client_id" name="client_id" required autocomplete="off">
+        <label for="client_secret">Discord Client Secret</label>
+        <input type="password" id="client_secret" name="client_secret" required autocomplete="off">
+        <label for="callback_url">OAuth2 Callback URL</label>
+        <input type="text" id="callback_url" name="callback_url" required autocomplete="off">
+        <button type="submit">Save Credentials</button>
+        <div class="success" id="successMsg" style="display:none"></div>
+        <div class="error" id="errorMsg" style="display:none"></div>
+      </form>
+    </div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/api/about">API Info</a>
+      <a href="https://github.com/Anime-Co" target="_blank">GitHub</a>
+    </div>
+  </main>
+  <footer>
+    &copy; Anime-Co Team. All rights reserved.
+  </footer>
+  <script>
+    // Check login status
+    fetch('/api/auth/user').then(r => {
+      if (r.status === 401) throw new Error('Not logged in');
+      return r.json();
+    }).then(user => {
+      document.getElementById('loginCard').style.display = 'none';
+      document.getElementById('settingsCard').style.display = 'block';
+      document.getElementById('username').textContent = user.username + '#' + user.discriminator;
+      document.getElementById('logoutBtn').style.display = 'inline';
+      // Load existing credentials
+      fetch('/api/user-bots/bot-settings').then(r => r.json()).then(data => {
+        if (data.client_id) document.getElementById('client_id').value = data.client_id;
+        if (data.client_secret) document.getElementById('client_secret').value = data.client_secret;
+        if (data.callback_url) document.getElementById('callback_url').value = data.callback_url;
+      });
+    }).catch(() => {
+      document.getElementById('loginCard').style.display = 'block';
+      document.getElementById('settingsCard').style.display = 'none';
+      document.getElementById('logoutBtn').style.display = 'none';
+    });
+    // Save credentials
+    document.getElementById('credsForm').onsubmit = function(e) {
+      e.preventDefault();
+      document.getElementById('successMsg').style.display = 'none';
+      document.getElementById('errorMsg').style.display = 'none';
+      fetch('/api/user-bots/bot-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: document.getElementById('client_id').value,
+          client_secret: document.getElementById('client_secret').value,
+          callback_url: document.getElementById('callback_url').value
+        })
+      }).then(r => r.json()).then(data => {
+        if (data.success) {
+          document.getElementById('successMsg').textContent = 'Credentials saved!';
+          document.getElementById('successMsg').style.display = 'block';
+        } else {
+          throw new Error(data.error || 'Unknown error');
+        }
+      }).catch(err => {
+        document.getElementById('errorMsg').textContent = err.message;
+        document.getElementById('errorMsg').style.display = 'block';
+      });
+    };
+    // Logout
+    document.getElementById('logoutBtn').onclick = function() {
+      fetch('/api/auth/logout').then(() => window.location.reload());
+    };
+  </script>
+</body>
+</html>
