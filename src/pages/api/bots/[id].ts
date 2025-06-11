@@ -62,7 +62,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const { id } = req.query;
-  const bot = bots.find(b => b.id === id && b.owner === session.user.email);
+  const userEmail = session.user?.email;
+  if (!userEmail) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  const bot = bots.find(b => b.id === id && b.owner === userEmail);
   if (!bot) {
     return res.status(404).json({ error: 'Bot not found' });
   }
