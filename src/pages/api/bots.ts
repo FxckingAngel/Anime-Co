@@ -1,8 +1,15 @@
 import { getSession } from 'next-auth/react';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-// In-memory bot storage for demonstration; replace with a real database in production
-let bots: any[] = [];
+interface Bot {
+  id: string;
+  owner: string;
+  name: string;
+  description: string;
+  createdAt: string;
+}
+
+const bots: Bot[] = [];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req });
@@ -15,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!name || typeof name !== 'string' || name.length < 3 || name.length > 32) {
       return res.status(400).json({ error: 'Invalid bot name.' });
     }
-    const bot = {
+    const bot: Bot = {
       id: Date.now().toString(),
       owner: session.user.email,
       name,

@@ -1,13 +1,43 @@
 import { getSession } from 'next-auth/react';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-// In-memory bot, command, audit log, and usage stats storage for demonstration; replace with a real database in production
-let bots: any[] = [];
-let commands: Record<string, any[]> = {};
-let auditLogs: Record<string, any[]> = {};
-let usageStats: Record<string, Record<string, { count: number; lastUsed: string }>> = {};
+interface Bot {
+  id: string;
+  owner: string;
+  name: string;
+  description: string;
+  createdAt: string;
+}
 
-function logAudit(botId: string, user: string, action: string, details: any) {
+interface Command {
+  id: string;
+  name: string;
+  trigger: string;
+  response: string;
+  createdAt: string;
+}
+
+interface AuditLog {
+  id: string;
+  user: string;
+  action: string;
+  details: Record<string, unknown>;
+  timestamp: string;
+}
+
+interface UsageStats {
+  [commandId: string]: {
+    count: number;
+    lastUsed: string;
+  };
+}
+
+const bots: Bot[] = [];
+const commands: Record<string, Command[]> = {};
+const auditLogs: Record<string, AuditLog[]> = {};
+const usageStats: Record<string, UsageStats> = {};
+
+function logAudit(botId: string, user: string, action: string, details: Record<string, unknown>) {
   if (!auditLogs[botId]) auditLogs[botId] = [];
   auditLogs[botId].push({
     id: Date.now().toString(),
@@ -50,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { commandId, name, trigger, response } = req.body;
     if (!commandId) return res.status(400).json({ error: 'Missing commandId.' });
     const botCommands = commands[bot.id] || [];
-    const cmd = botCommands.find((c: any) => c.id === commandId);
+    const cmd = botCommands.find((c: Command) => c.id === commandId);
     if (!cmd) return res.status(404).json({ error: 'Command not found.' });
     const oldCmd = { ...cmd };
     if (name) cmd.name = name;
@@ -64,15 +94,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { commandId, deleteBot } = req.body;
     if (deleteBot) {
       logAudit(bot.id, session.user.email, 'delete_bot', { bot });
-      bots = bots.filter(b => b.id !== id);
+      const botIndex = bots.findIndex(b => b.id === id);
+      if (botIndex !== -1) bots.splice(botIndex, 1);
       delete commands[bot.id];
       delete auditLogs[bot.id];
       delete usageStats[bot.id];
       return res.status(200).json({ success: true });
     }
     if (!commandId) return res.status(400).json({ error: 'Missing commandId.' });
-    const cmd = (commands[bot.id] || []).find((c: any) => c.id === commandId);
-    commands[bot.id] = (commands[bot.id] || []).filter((c: any) => c.id !== commandId);
+    const cmd = (commands[bot.id] || []).find((c: Command) => c.id === commandId);
+    commands[bot.id] = (commands[bot.id] || []).filter((c: Command) => c.id !== commandId);
     logAudit(bot.id, session.user.email, 'delete_command', { command: cmd });
     if (usageStats[bot.id]) delete usageStats[bot.id][commandId];
     return res.status(200).json({ success: true });
@@ -94,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Missing command fields.' });
     }
     if (!commands[bot.id]) commands[bot.id] = [];
-    const command = {
+    const command: Command = {
       id: Date.now().toString(),
       name,
       trigger,

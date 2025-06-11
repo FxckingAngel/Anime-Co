@@ -45,10 +45,13 @@ export default function Dashboard() {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '3rem 1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <img
+            <import Image from 'next/image'; />
+            <Image
               src={session.user?.image || '/user.svg'}
               alt={session.user?.name || 'User'}
-              style={{ width: 56, height: 56, borderRadius: '50%', border: '2px solid #2563eb', background: '#fff' }}
+              width={56}
+              height={56}
+              style={{ borderRadius: '50%', border: '2px solid #2563eb', background: '#fff' }}
             />
             <div>
               <div style={{ fontSize: '1.3rem', fontWeight: 700 }}>{session.user?.name}</div>
@@ -88,7 +91,10 @@ export default function Dashboard() {
             justifyContent: 'center',
           }}>
             <div style={{ fontSize: '1.25rem', color: '#475569', marginBottom: '1.5rem' }}>
-              You have no bots yet. <a href="/dashboard/create-bot" style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Create your first bot</a>.
+              You have no bots yet. <import Link from 'next/link'; />
+              <Link href="/dashboard/create-bot" legacyBehavior>
+                <a style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Create your first bot</a>
+              </Link>.
             </div>
           </div>
         ) : (
@@ -110,19 +116,21 @@ export default function Dashboard() {
                 <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>{bot.name}</div>
                 <div style={{ color: '#475569', fontSize: '1.05rem' }}>{bot.description}</div>
                 <div style={{ color: '#64748b', fontSize: '0.95rem', marginTop: 8 }}>Created: {new Date(bot.createdAt).toLocaleString()}</div>
-                <a href={`/dashboard/bot/${bot.id}`} style={{
-                  marginTop: 16,
-                  background: '#2563eb',
-                  color: '#fff',
-                  borderRadius: 8,
-                  padding: '0.7rem 1.5rem',
-                  fontWeight: 700,
-                  fontSize: '1.05rem',
-                  textDecoration: 'none',
-                  textAlign: 'center',
-                  display: 'inline-block',
-                  transition: 'background 0.2s',
-                }}>Manage Bot</a>
+                <Link href={`/dashboard/bot/${bot.id}`} legacyBehavior>
+                  <a style={{
+                    marginTop: 16,
+                    background: '#2563eb',
+                    color: '#fff',
+                    borderRadius: 8,
+                    padding: '0.7rem 1.5rem',
+                    fontWeight: 700,
+                    fontSize: '1.05rem',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    display: 'inline-block',
+                    transition: 'background 0.2s',
+                  }}>Manage Bot</a>
+                </Link>
               </div>
             ))}
           </div>

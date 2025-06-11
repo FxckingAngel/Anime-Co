@@ -19,11 +19,12 @@ const Layout = ({ children, title = 'BotGhost Pro' }: LayoutProps) => (
       <header className={styles.header}>
         <div className={styles.logo}>BotGhost Pro</div>
         <nav className={styles.nav}>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/commands">Commands</a>
-          <a href="/docs">Docs</a>
-          <a href="/pricing">Pricing</a>
-          <a href="/login" className={styles.loginBtn}>Login</a>
+          <import Link from 'next/link'; />
+          <Link href="/dashboard" legacyBehavior><a>Dashboard</a></Link>
+          <Link href="/commands" legacyBehavior><a>Commands</a></Link>
+          <Link href="/docs" legacyBehavior><a>Docs</a></Link>
+          <Link href="/pricing" legacyBehavior><a>Pricing</a></Link>
+          <Link href="/login" legacyBehavior><a className={styles.loginBtn}>Login</a></Link>
         </nav>
       </header>
       <main className={styles.main}>{children}</main>

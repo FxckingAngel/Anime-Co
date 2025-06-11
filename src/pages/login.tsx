@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 
 export default function Login() {
-  const [providers, setProviders] = useState<any>(null);
+  const [providers, setProviders] = useState<Record<string, any> | null>(null);
 
   useEffect(() => {
     getProviders().then(setProviders);
