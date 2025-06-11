@@ -20,11 +20,11 @@ const Layout = ({ children, title = 'Mellie' }: LayoutProps) => (
       <header className={styles.header}>
         <div className={styles.logo}>Mellie</div>
         <nav className={styles.nav}>
-          <Link href="/dashboard" legacyBehavior><a>Dashboard</a></Link>
-          <Link href="/commands" legacyBehavior><a>Commands</a></Link>
-          <Link href="/docs" legacyBehavior><a>Docs</a></Link>
-          <Link href="/pricing" legacyBehavior><a>Pricing</a></Link>
-          <Link href="/login" legacyBehavior><a className={styles.loginBtn}>Login</a></Link>
+          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/commands">Commands</Link>
+          <Link href="/docs">Docs</Link>
+          <Link href="/pricing">Pricing</Link>
+          <Link href="/login" className={styles.loginBtn}>Login</Link>
         </nav>
       </header>
       <main className={styles.main}>{children}</main>

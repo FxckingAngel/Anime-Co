@@ -86,9 +86,7 @@ export default function Dashboard() {
             justifyContent: 'center',
           }}>
             <div style={{ fontSize: '1.25rem', color: '#475569', marginBottom: '1.5rem' }}>
-              You have no bots yet. <Link href="/dashboard/create-bot" legacyBehavior>
-                <a style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Create your first bot</a>
-              </Link>.
+              You have no bots yet. <Link href="/dashboard/create-bot" style={{ color: '#2563eb', fontWeight: 600, textDecoration: 'underline' }}>Create your first bot</Link>.
             </div>
           </div>
         ) : (
@@ -110,8 +108,8 @@ export default function Dashboard() {
                 <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>{bot.name}</div>
                 <div style={{ color: '#475569', fontSize: '1.05rem' }}>{bot.description}</div>
                 <div style={{ color: '#64748b', fontSize: '0.95rem', marginTop: 8 }}>Created: {new Date(bot.createdAt).toLocaleString()}</div>
-                <Link href={`/dashboard/bot/${bot.id}`} legacyBehavior>
-                  <a style={{
+                <Link href={`/dashboard/bot/${bot.id}`}
+                  style={{
                     marginTop: 16,
                     background: '#2563eb',
                     color: '#fff',
@@ -123,7 +121,9 @@ export default function Dashboard() {
                     textAlign: 'center',
                     display: 'inline-block',
                     transition: 'background 0.2s',
-                  }}>Manage Bot</a>
+                  }}
+                >
+                  Manage Bot
                 </Link>
               </div>
             ))}
